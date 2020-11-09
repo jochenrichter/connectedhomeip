@@ -5,6 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SeekBar
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import chip.devicecontroller.ChipCommandType
 import chip.devicecontroller.ChipDeviceController
@@ -19,6 +21,7 @@ class OnOffClientFragment : Fragment() {
     get() = ChipClient.getDeviceController()
 
   private var commandType: ChipCommandType? = null
+  private var levelValue: Int? = null
 
   override fun onCreateView(
       inflater: LayoutInflater,
@@ -31,6 +34,24 @@ class OnOffClientFragment : Fragment() {
       onBtn.setOnClickListener { sendOnCommandClick() }
       offBtn.setOnClickListener { sendOffCommandClick() }
       toggleBtn.setOnClickListener { sendToggleCommandClick() }
+
+      levelBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        override fun onProgressChanged(seekBar: SeekBar, i: Int, b: Boolean) {
+
+        }
+
+        override fun onStartTrackingTouch(seekBar: SeekBar?) {
+        }
+
+        override fun onStopTrackingTouch(seekBar: SeekBar?) {
+          Toast.makeText(requireContext(),
+                  "Level is: " + levelBar.progress,
+                  Toast.LENGTH_SHORT).show()
+          commandType = ChipCommandType.LEVEL
+          levelValue = levelBar.progress
+          if (deviceController.isConnected) sendCommand() else connectToDevice()
+        }
+      })
     }
   }
 
@@ -63,16 +84,19 @@ class OnOffClientFragment : Fragment() {
 
   private fun sendOnCommandClick() {
     commandType = ChipCommandType.ON
+    levelValue = 0
     if (deviceController.isConnected) sendCommand() else connectToDevice()
   }
 
   private fun sendOffCommandClick() {
     commandType = ChipCommandType.OFF
+    levelValue = 0
     if (deviceController.isConnected) sendCommand() else connectToDevice()
   }
 
   private fun sendToggleCommandClick() {
     commandType = ChipCommandType.TOGGLE
+    levelValue = 0
     if (deviceController.isConnected) sendCommand() else connectToDevice()
   }
 
@@ -91,9 +115,9 @@ class OnOffClientFragment : Fragment() {
     }
 
     commandStatusTv.text =
-        requireContext().getString(R.string.send_command_type_label_text, chipCommandType.name)
+        requireContext().getString(R.string.send_command_type_label_text, chipCommandType.name, levelValue)
 
-    deviceController.beginSendCommand(commandType)
+    deviceController.beginSendCommand(commandType, ( 0xff and (levelValue ?: 0)))
   }
 
   companion object {

@@ -22,7 +22,7 @@
     <string name="echo_status_response">Received echo response:\n\n%1$s</string>
     <string name="scan_qr_code_btn_text">Scan QR Code</string>
     <string name="echo_client_btn_text">Echo Client</string>
-    <string name="on_off_btn_text">Light On/Off Cluster</string>
+    <string name="on_off_level_btn_text">Light On/Off &amp; Level Cluster</string>
     <string name="enter_ip_address_hint_text">Enter IP Address (eg. 192.168.10.2)</string>
     <string name="echo_input_hint_text">Enter message for device</string>
 
