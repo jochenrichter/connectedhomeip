@@ -853,7 +853,7 @@ bool emberAfKeyEstablishmentCallback(EmberAfKeyEstablishmentNotifyMessage status
  * @param endpoint   Ver.: always
  * @param newValue   Ver.: always
  */
-//void emberAfOnOffClusterLevelControlEffectCallback(uint8_t endpoint, bool newValue) {}
+// void emberAfOnOffClusterLevelControlEffectCallback(uint8_t endpoint, bool newValue) {}
 
 /** @brief Main Init
  *
